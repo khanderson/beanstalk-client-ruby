@@ -223,14 +223,14 @@ module Beanstalk
     def read_job(word)
       id, bytes = check_resp(word).map{|s| s.to_i}
       body = read_bytes(bytes)
-      raise 'bad trailer' if read_bytes(2) != "\r\n"
+      raise "bad trailer for job #{id}" if read_bytes(2) != "\r\n"
       [id, body, word == 'RESERVED']
     end
 
     def read_yaml(word)
       bytes_s, = check_resp(word)
       yaml = read_bytes(bytes_s.to_i)
-      raise 'bad trailer' if read_bytes(2) != "\r\n"
+      raise "bad trailer for job #{id}" if read_bytes(2) != "\r\n"
       YAML::load(yaml)
     end
 
